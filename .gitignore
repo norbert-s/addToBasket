@@ -1,0 +1,10 @@
+.idea
+target/
+logFiles/
+testngFilesLocal/
+testng_master_local.xml
+*.log
+selenium-standalone.jar
+selenium-server-4.0.0.jar
+selenium-standalone.zip
+selenium-standalone/

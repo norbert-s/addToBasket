@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Chrome tests" >
+
+    <parameter name="browser-name" value="chrome" />
+    <test name="Chrome" >
+
+        <groups>
+            <define name = "all">
+                <include name = "add_to_basket"/>
+            </define>
+            <run>
+                <include name = "all"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="tests.PracticeClass"/>
+        </classes>
+    </test>
+</suite> <!-- Suite -->
