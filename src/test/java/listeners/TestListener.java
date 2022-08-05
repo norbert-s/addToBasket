@@ -43,7 +43,14 @@ public class TestListener implements ITestListener {
     public void onTestSuccess(ITestResult result) {
         ITestContext context = result.getTestContext();
         String suite = context.getSuite().getName();
-        logger.warn(suite+" "+result.getName()+ "------Test finished with SUCCESS------" );
+        this.d = ((PracticeClass)result.getInstance()).d;
+        try {
+            File screenshots = ((TakesScreenshot) d).getScreenshotAs(OutputType.FILE);
+            logger.error(suite+" "+result.getName()+"------Test finished with Success------");
+            FileUtils.copyFile(screenshots,new File(location +"passed"+ DateTimeStampGetter.getDateTime()+suite+"_"+  result.getName()+ ".png"));
+        } catch (Throwable e) {
+            logger.error(suite+" "+result.getName()+"taking a screenshot did not succeed");
+        }
     }
     @Override
     public void onTestFailure(ITestResult result) throws TimeoutException {

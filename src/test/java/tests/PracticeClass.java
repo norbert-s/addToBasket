@@ -15,6 +15,7 @@ import org.testng.annotations.Optional;
 import pageObjectClasses.utilityMethods.ConcreteTestMethodsOfChallenge;
 import pageObjectClasses.utilityMethods.GenericMethods;
 import pageObjectClasses.utilityMethods.LocatorsOfChallengeProject;
+import pageObjectClasses.utilityMethods.UtilityMethods;
 import utilityClasses.testSetup.deviceSetup.BrowserType;
 import utilityClasses.testSetup.deviceSetup.ChromeDeviceSetup;
 import utilityClasses.testSetup.wrapperForSetupClasses.WrapperToCallSetupMethods;
@@ -68,33 +69,19 @@ public class PracticeClass implements ParentForTestListener,BrowserType, Locator
         test.clickOnAcceptCookie(cookiePopupSaturn);
         test.enterTextToSearchForm(searchFormSaturn,"monitor");
         test.waitForPageToLoadCompletely();
-        List<WebElement> myElements = d.findElements(By.xpath("//div[@data-test=\"product-price\"]/descendant::span[8]"));
-        HashMap<Double,Integer> myMap = new HashMap<>();
 
-        int j=0;
-        for(WebElement i:myElements){
-            myMap.put(Double.parseDouble(i.getText()),j);
-            j++;
-        }
-        Map sorted = myMap.entrySet()
-                .stream()
-                .sorted((i1, i2)
-                        -> i2.getKey().compareTo(
-                        i1.getKey()))
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        Map.Entry::getValue,
-                        (e1, e2) -> e1, LinkedHashMap::new));
+        List<WebElement> priceElements = d.findElements(By.xpath("//div[@data-test=\"product-price\"]/descendant::span[8]"));
+        HashMap<Double,Integer>  mapWithWebelements = UtilityMethods.addValuesAndIndexesToMap(priceElements);
+        HashMap<Double,Integer>  sorted = UtilityMethods.sortingMap(mapWithWebelements);
 
         List<Integer> finalIndexList = new ArrayList<>();
         List<Double> finalPriceList = new ArrayList<>();
         int counter = 0;
         logger.debug("ordered list");
         sorted.forEach((k,v)->{
-                finalIndexList.add((Integer) v);
-                finalPriceList.add((Double) k);
-                logger.debug("price "+k);
-
+                finalIndexList.add(v);
+                finalPriceList.add(k);
+                logger.debug("price:"+k+", index:"+v);
         });
         //selecting the first highest price index and going back by xpath to that element in the dom
 
@@ -116,14 +103,15 @@ public class PracticeClass implements ParentForTestListener,BrowserType, Locator
             }
         }
         String [] totalValueString = d.findElement(checkOutTotal).getText().split(",");
-
-        int totalValueActual = (int)(Integer.parseInt(totalValueString[0]));
+        String decimalSplit []= totalValueString[1].split(" ");
+        double decimal = Double.parseDouble("0."+decimalSplit[0]);
+        double totalValueActual = (int)(Integer.parseInt(totalValueString[0]))+decimal;
         double totalValueExpected = finalPriceList.get(0)+ finalPriceList.get(1);
-        int finalExpected = (int)(Math.floor(totalValueExpected));
-        logger.debug("expected "+finalExpected);
-        logger.debug("actual "+totalValueActual);
+        double finalExpected = totalValueExpected;
+        logger.debug("Total price expected to be:"+finalExpected);
+        logger.debug("actual total price:"+totalValueActual);
+        //taking screenshot of thepage of the total added to basket if successful
         Assert.assertEquals(finalExpected,totalValueActual);
       }
-
     }
 

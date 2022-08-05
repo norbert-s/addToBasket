@@ -57,7 +57,7 @@ public class ChromeDeviceSetup implements DeviceSetupBase {
     @Override
     public ChromeDriverService driverServiceFactory() throws Exception {
         ChromeDriverService service = new ChromeDriverService.Builder()
-                .usingDriverExecutable(new File("D:\\OneDrive\\binaries\\chromedriver\\chromedriver_win32\\chromedriver.exe"))
+                .usingDriverExecutable(new File("C:\\Users\\norbert.susztek\\OneDrive - Accenture\\binaries\\chromedriver\\chromedriver.exe"))
                 .usingAnyFreePort()
                 .build();
         return service;
