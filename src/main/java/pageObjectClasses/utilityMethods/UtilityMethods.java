@@ -1,5 +1,7 @@
 package pageObjectClasses.utilityMethods;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.Logger;
 import org.openqa.selenium.WebElement;
 
 import java.util.HashMap;
@@ -9,6 +11,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class UtilityMethods {
+    private static final Logger logger = (Logger) LogManager.getLogger(UtilityMethods.class);
     public static HashMap addValuesAndIndexesToMap(List<WebElement> t){
         HashMap<Double,Integer> map = new HashMap<>();
         int j=0;
@@ -30,6 +33,15 @@ public class UtilityMethods {
                         Map.Entry::getValue,
                         (e1, e2) -> e1, LinkedHashMap::new));
         return sorted;
+    }
+
+    public static void creatingFinalLists(List<Double> finalPrice, List<Integer> finalIndex, HashMap<Double,Integer>sorted){
+        logger.debug("ordered list");
+        sorted.forEach((k,v)->{
+            finalPrice.add(k);
+            finalIndex.add(v);
+            logger.debug("price:"+k+", index:"+v);
+        });
     }
 
 }

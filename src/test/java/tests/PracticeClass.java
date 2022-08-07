@@ -60,7 +60,6 @@ public class PracticeClass implements ParentForTestListener,BrowserType, Locator
     public void tearDownFinal() {
        ChromeDeviceSetup.service.stop();
     }
-    
 
     @Test(groups = {"add_to_basket"})
     public void addItemsToBasketWithHighestPrice() throws Exception {
@@ -73,45 +72,22 @@ public class PracticeClass implements ParentForTestListener,BrowserType, Locator
         List<WebElement> priceElements = d.findElements(By.xpath("//div[@data-test=\"product-price\"]/descendant::span[8]"));
         HashMap<Double,Integer>  mapWithWebelements = UtilityMethods.addValuesAndIndexesToMap(priceElements);
         HashMap<Double,Integer>  sorted = UtilityMethods.sortingMap(mapWithWebelements);
-
-        List<Integer> finalIndexList = new ArrayList<>();
         List<Double> finalPriceList = new ArrayList<>();
-        int counter = 0;
-        logger.debug("ordered list");
-        sorted.forEach((k,v)->{
-                finalIndexList.add(v);
-                finalPriceList.add(k);
-                logger.debug("price:"+k+", index:"+v);
-        });
-        //selecting the first highest price index and going back by xpath to that element in the dom
+        List<Integer> finalIndexList = new ArrayList<>();
 
-        int limit = 1;
-        for(Integer i: finalIndexList) {
-            if(counter<=limit){
-                test.waitForPageToLoadCompletely();
-                test.scrollBy(i*100);
-                d.findElements( By.xpath("//div[@data-test='product-price']/descendant::span[8]/ancestor::div[@data-test='mms-search-srp-productlist-item']")).get(i).click();
-                test.waitForAndClick(addToBasket);
-                test.waitForAndClick(closeAddToBasketModal);
-                if(counter<limit){
-                    d.navigate().back();
-                }
-                if(counter==limit){
-                    d.findElement(By.cssSelector("button[data-test=\"mms-primary-modal-footer-buttons\"]")).click();
-                }
-                counter++;
-            }
-        }
+        UtilityMethods.creatingFinalLists(finalPriceList,finalIndexList,sorted);
+        test.addItemsToBasket(finalIndexList);
+
         String [] totalValueString = d.findElement(checkOutTotal).getText().split(",");
         String decimalSplit []= totalValueString[1].split(" ");
         double decimal = Double.parseDouble("0."+decimalSplit[0]);
         double totalValueActual = (int)(Integer.parseInt(totalValueString[0]))+decimal;
         double totalValueExpected = finalPriceList.get(0)+ finalPriceList.get(1);
-        double finalExpected = totalValueExpected;
-        logger.debug("Total price expected to be:"+finalExpected);
+
+        logger.debug("Total price expected to be:"+totalValueExpected);
         logger.debug("actual total price:"+totalValueActual);
-        //taking screenshot of thepage of the total added to basket if successful
-        Assert.assertEquals(finalExpected,totalValueActual);
+        //taking screenshot of the page of total everything was successful
+        Assert.assertEquals(totalValueExpected,totalValueActual);
       }
     }
 

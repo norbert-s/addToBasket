@@ -296,4 +296,27 @@ public class GenericMethods implements GlobalSettingsGetterMethods, SelectFromDr
     public void clickOnNthElementInList(By element,int index) throws Exception {
         waitForAndClick(d.findElements(element).get(index));
     }
+
+    public void addItemsToBasket(List<Integer>finalIndexList) throws Exception {
+        //selecting the first highest price index and going back by xpath to that element in the dom
+        int counter = 0;
+        int limit = 1;
+        for(Integer i: finalIndexList) {
+            if(counter<=limit){
+                waitForPageToLoadCompletely();
+                scrollBy(i*100);
+
+                d.findElements( itemClickablePart).get(i).click();
+                waitForAndClick(addToBasket);
+                waitForAndClick(closeAddToBasketModal);
+                if(counter<limit){
+                    d.navigate().back();
+                }
+                if(counter==limit){
+                    d.findElement(basketSaturn).click();
+                }
+                counter++;
+            }
+        }
+    }
 }

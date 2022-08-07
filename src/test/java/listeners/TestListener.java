@@ -46,10 +46,10 @@ public class TestListener implements ITestListener {
         this.d = ((PracticeClass)result.getInstance()).d;
         try {
             File screenshots = ((TakesScreenshot) d).getScreenshotAs(OutputType.FILE);
-            logger.error(suite+" "+result.getName()+"------Test finished with Success------");
+            logger.info(suite+" "+result.getName()+"------Test finished with Success------");
             FileUtils.copyFile(screenshots,new File(location +"passed"+ DateTimeStampGetter.getDateTime()+suite+"_"+  result.getName()+ ".png"));
         } catch (Throwable e) {
-            logger.error(suite+" "+result.getName()+"taking a screenshot did not succeed");
+            logger.info(suite+" "+result.getName()+"taking a screenshot did not succeed");
         }
     }
     @Override

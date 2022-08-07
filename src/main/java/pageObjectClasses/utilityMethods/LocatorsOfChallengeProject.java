@@ -20,4 +20,7 @@ public interface LocatorsOfChallengeProject {
     public By checkOutTotal = By.cssSelector("h3[data-test=\"checkout-total\"]");
     public By addToBasket = By.cssSelector("button[id=\"pdp-add-to-cart-button\"]");
     public By closeAddToBasketModal = By.cssSelector("button[data-test=\"modal-close-button\"]");
+
+    public By itemClickablePart = By.xpath("//div[@data-test='product-price']/descendant::span[8]/ancestor::div[@data-test='mms-search-srp-productlist-item']");
+    public By basketSaturn = By.cssSelector("button[data-test=\"mms-primary-modal-footer-buttons\"]");
 }
