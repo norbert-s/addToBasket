@@ -66,7 +66,7 @@ public class PracticeClass implements ParentForTestListener,BrowserType, Locator
         d.navigate().to("https://saturn.de");
         test.waitForPageToLoadCompletely();
         test.clickOnAcceptCookie(cookiePopupSaturn);
-        test.enterTextToSearchForm(searchFormSaturn,"monitor");
+        test.enterTextToSearchForm(searchFormSaturn,"gaming monitor");
         test.waitForPageToLoadCompletely();
 
         List<WebElement> priceElements = d.findElements(By.xpath("//div[@data-test=\"product-price\"]/descendant::span[8]"));

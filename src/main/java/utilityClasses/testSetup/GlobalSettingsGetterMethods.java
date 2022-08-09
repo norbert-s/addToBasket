@@ -202,7 +202,7 @@ public interface GlobalSettingsGetterMethods {
          * by default incognito is used
          */
     static boolean isIncognitoNeeded(){
-        if(System.getProperty("incognitoneeded")==null||System.getProperty("incognitoneeded").equals("true")) return true;
+        if(System.getProperty("isincognitoneeded")==null||System.getProperty("isincognitoneeded").equals("true")) return true;
         else {
             return false;
         }
